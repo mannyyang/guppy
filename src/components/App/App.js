@@ -22,6 +22,7 @@ import Titlebar from '../Titlebar';
 import ApplicationMenu from '../ApplicationMenu';
 import ProjectPage from '../ProjectPage';
 import CreateNewProjectWizard from '../CreateNewProjectWizard';
+import RamPumpPage from '../RamPumpPage';
 
 import type { Action } from 'redux';
 import type { Project } from '../../types';
@@ -73,6 +74,10 @@ class App extends Component<Props> {
             <Switch>
               <Route exact path="/" component={IntroScreen} />
               <Route
+                path="/rampump"
+                render={routerProps => <RamPumpPage {...routerProps} />}
+              />
+              <Route
                 path="/project/:projectId"
                 render={routerProps => (
                   <ProjectPage
@@ -111,11 +116,13 @@ const MainContent = styled.div`
   flex: 1;
 `;
 
-const mapStateToProps = state => ({
-  onboardingStatus: getOnboardingStatus(state),
-  projects: getProjectsArray(state),
-  selectedProject: getSelectedProject(state),
-});
+const mapStateToProps = state => {
+  return {
+    onboardingStatus: getOnboardingStatus(state),
+    projects: getProjectsArray(state),
+    selectedProject: getSelectedProject(state),
+  };
+};
 
 export default withRouter(
   connect(

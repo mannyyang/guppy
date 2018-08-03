@@ -16,7 +16,6 @@ import DevelopmentServerPane from '../DevelopmentServerPane';
 import TaskRunnerPane from '../TaskRunnerPane';
 import DependencyManagementPane from '../DependencyManagementPane';
 import Pages from '../Pages';
-import ImportProjectButton from '../ImportProjectButton';
 
 import type { Project } from '../../types';
 
@@ -29,7 +28,7 @@ type Props = {
   history: any, // provided by withRouter HOC
 };
 
-class ProjectPage extends Component<Props> {
+class RamPumpPage extends Component<Props> {
   componentDidMount() {
     window.scroll({
       top: 0,
@@ -78,13 +77,13 @@ class ProjectPage extends Component<Props> {
               RamPump
             </Heading>
           </PixelShifter>
-          <ImportProjectButton>Import it instead</ImportProjectButton>
+
           <Pages />
 
           <Spacer size={30} />
           <DevelopmentServerPane leftSideWidth={300} />
 
-          <Spacer size={30} />
+          {/* <Spacer size={30} />
           <TaskRunnerPane leftSideWidth={200} />
 
           {project.dependencies.length > 0 && (
@@ -92,7 +91,7 @@ class ProjectPage extends Component<Props> {
               <Spacer size={30} />
               <DependencyManagementPane />
             </Fragment>
-          )}
+          )} */}
 
           <Spacer size={60} />
         </MainContentWrapper>
@@ -118,5 +117,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     { loadDependencyInfoFromDisk }
-  )(ProjectPage)
+  )(RamPumpPage)
 );

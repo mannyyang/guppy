@@ -46,10 +46,21 @@ export const IMPORT_EXISTING_PROJECT_START = 'IMPORT_EXISTING_PROJECT_START';
 export const IMPORT_EXISTING_PROJECT_ERROR = 'IMPORT_EXISTING_PROJECT_ERROR';
 export const IMPORT_EXISTING_PROJECT_FINISH = 'IMPORT_EXISTING_PROJECT_FINISH';
 
+// RAMPUMP ACTIONS
+export const SHOW_RAMPUMP_PROJECT_PROMPT = 'SHOW_RAMPUMP_PROJECT_PROMPT';
+export const SET_RAMPUMP_ROOT_FOLDER = 'SET_RAMPUMP_ROOT_FOLDER';
+
 //
 //
 // Action Creators
 //
+
+// RamPump Action Creators
+export const showRamPumpProjectPrompt = () => ({
+  type: SHOW_RAMPUMP_PROJECT_PROMPT,
+});
+
+/////////
 export const addProject = (project: Project) => ({
   type: ADD_PROJECT,
   project,

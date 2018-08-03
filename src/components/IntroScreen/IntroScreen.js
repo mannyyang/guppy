@@ -10,10 +10,11 @@ import { COLORS } from '../../constants';
 import { getOnboardingStatus } from '../../reducers/onboarding-status.reducer';
 
 import Button from '../Button';
-import ImportProjectButton from '../ImportProjectButton';
+import IntroSetupButton from '../IntroSetupButton';
 import Spacer from '../Spacer';
 import Logo from '../Logo';
 import Swimming from '../Swimming';
+import Label from '../Label';
 
 type Props = {
   shouldHideContent: boolean,
@@ -28,22 +29,17 @@ class IntroScreen extends Component<Props> {
       <Fragment>
         <Wrapper isVisible={!shouldHideContent}>
           <Header>
-            <Swimming>
-              <Logo size="medium" />
-            </Swimming>
-            <AppName>Guppy</AppName>
+            <Logo size="large" />
+            <AppName>T.R.A.M.</AppName>
+            <Label>RamPump's Task Runner and App Manager</Label>
           </Header>
 
           <Actions>
-            <Button size="large" onClick={() => createNewProjectStart()}>
-              Create a new web application
-            </Button>
             <Spacer size={40} />
             <div>
-              Or,{' '}
-              <ImportProjectButton color={COLORS.blue[700]}>
-                import an existing project
-              </ImportProjectButton>
+              <IntroSetupButton color={COLORS.blue[700]}>
+                To get started, find RamPump's root directory.
+              </IntroSetupButton>
             </div>
           </Actions>
         </Wrapper>

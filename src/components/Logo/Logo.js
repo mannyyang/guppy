@@ -14,12 +14,11 @@ class Logo extends Component<Props> {
     return (
       <LogoElem size={size} grayscale={grayscale}>
         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-        🐠
+        🚇
       </LogoElem>
     );
   }
 }
-
 const getFontSize = ({ size }) => {
   switch (size) {
     case 'small':
