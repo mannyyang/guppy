@@ -5,7 +5,7 @@ import { BREAKPOINTS } from '../../constants';
 import { SIDEBAR_WIDTH } from '../Sidebar';
 
 export default styled.div`
-  width: 1050px;
+  width: 1200px;
   max-width: calc(100vw - ${SIDEBAR_WIDTH}px);
 
   @media ${BREAKPOINTS.sm} {

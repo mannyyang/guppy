@@ -16,6 +16,7 @@ import findAvailablePort from '../services/find-available-port.service';
 
 import type { Task, ProjectType } from '../types';
 
+const path = window.require('path');
 const { ipcRenderer } = window.require('electron');
 const childProcess = window.require('child_process');
 const psTree = window.require('ps-tree');
@@ -65,8 +66,18 @@ export default (store: any) => (next: any) => (action: any) => {
            * specify environment variables:
            */
 
-          const child = childProcess.spawn(instruction, args, {
-            cwd: projectPath,
+          /**
+           * Dev Server Task
+           *
+           */
+
+          // const child = childProcess.spawn(instruction, args, {
+          //   cwd: projectPath,
+          //   shell: true,
+          // });
+
+          const child = childProcess.spawn('npm', ['start'], {
+            cwd: path.resolve('/Users/myang/git/RamPump/src'),
             shell: true,
           });
 

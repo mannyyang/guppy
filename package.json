@@ -21,7 +21,7 @@
     "flow": "flow",
     "prettier": "prettier --write",
     "detect-port": "./node_modules/detect-port-alt/bin/detect-port 3000",
-    "precommit": "yarn run flow && lint-staged"
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.js": [
