@@ -9,6 +9,8 @@ import {
   receiveDataFromTaskExecution,
   loadDependencyInfoFromDisk,
 } from '../actions';
+import { LAUNCH_RAMPUMP_DEV_SERVER } from '../actions/rampump-actions';
+
 import { getProjectById } from '../reducers/projects.reducer';
 import { getPathForProjectId } from '../reducers/paths.reducer';
 import { isDevServerTask } from '../reducers/tasks.reducer';
@@ -30,12 +32,94 @@ export default (store: any) => (next: any) => (action: any) => {
 
   const state = store.getState();
 
-  const project = getProjectById(state, task.projectId);
-  const projectPath = getPathForProjectId(state, task.projectId);
+  // const project = getProjectById(state, task.projectId);
+  // const projectPath = getPathForProjectId(state, task.projectId);
 
   // eslint-disable-next-line default-case
   switch (action.type) {
+    case LAUNCH_RAMPUMP_DEV_SERVER: {
+      findAvailablePort()
+        .then(port => {
+          const [instruction, ...args] = getDevServerCommand(
+            task,
+            'rampump',
+            port
+          );
+
+          /**
+           * NOTE: A quirk in Electron means we can't use `env` to supply
+           * environment variables, as you would traditionally:
+           *
+              childProcess.spawn(
+                `npm`,
+                ['run', name],
+                {
+                  cwd: projectPath,
+                  env: { PORT: port },
+                }
+              );
+           *
+           * If I try to run this, I get a bunch of nonsensical errors about
+           * no commands (not even built-in ones like `ls`) existing.
+           * I added a comment here:
+           * https://github.com/electron/electron/issues/3627
+           *
+           * As a workaround, I'm using "shell mode" to avoid having to
+           * specify environment variables:
+           */
+
+          /**
+           * Dev Server Task
+           *
+           */
+
+          const child = childProcess.spawn(instruction, args, {
+            cwd: state.rampump.rootSrcDir,
+            shell: true,
+          });
+
+          // Now that we have a port/processId for the server, attach it to
+          // the task. The port is used for opening the app, the pid is used
+          // to kill the process
+          next(attachTaskMetadata(task, child.pid, port));
+
+          ipcRenderer.send('addProcessId', child.pid);
+
+          child.stdout.on('data', data => {
+            // Ok so, unfortunately, failure-to-compile is still pushed
+            // through stdout, not stderr. We want that message specifically
+            // to trigger an error state, and so we need to parse it.
+            const text = data.toString();
+
+            const isError = text.includes('Failed to compile.');
+
+            next(receiveDataFromTaskExecution(task, text, isError));
+          });
+
+          child.stderr.on('data', data => {
+            next(receiveDataFromTaskExecution(task, data.toString()));
+          });
+
+          child.on('exit', code => {
+            const wasSuccessful = code === 0 || code === null;
+            const timestamp = new Date();
+
+            store.dispatch(completeTask(task, timestamp, wasSuccessful));
+          });
+        })
+        .catch(err => {
+          // TODO: Error handling (this can happen if the first 15 ports are
+          // occupied, or if there's some generic Node error)
+          console.error(err);
+        });
+
+      break;
+    }
+
     case LAUNCH_DEV_SERVER: {
+      const project = getProjectById(state, task.projectId);
+      const projectPath = getPathForProjectId(state, task.projectId);
+
       findAvailablePort()
         .then(port => {
           const [instruction, ...args] = getDevServerCommand(
@@ -126,6 +210,7 @@ export default (store: any) => (next: any) => (action: any) => {
       const { projectId, name } = action.task;
 
       const project = getProjectById(store.getState(), projectId);
+      const projectPath = getPathForProjectId(state, task.projectId);
 
       // TEMPORARY HACK
       // By default, create-react-app runs tests in interactive watch mode.
@@ -279,6 +364,8 @@ const getDevServerCommand = (
   port: string
 ) => {
   switch (projectType) {
+    case 'rampump':
+      return ['npm', 'start'];
     case 'create-react-app':
       return [`PORT=${port} npm`, 'run', task.name];
     case 'gatsby':

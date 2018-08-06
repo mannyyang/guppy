@@ -17,7 +17,7 @@ import {
 import { getOnboardingStatus } from '../../reducers/onboarding-status.reducer';
 
 import IntroScreen from '../IntroScreen';
-import Sidebar from '../Sidebar';
+import Sidebar from '../RamPumpSidebar';
 import Titlebar from '../Titlebar';
 import ApplicationMenu from '../ApplicationMenu';
 import ProjectPage from '../ProjectPage';

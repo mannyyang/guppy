@@ -7,6 +7,7 @@ import styled, { keyframes } from 'styled-components';
 import { getSelectedProject } from '../../reducers/projects.reducer';
 import { COLORS } from '../../constants';
 import { loadDependencyInfoFromDisk } from '../../actions';
+import { showRamPumpSidebar } from '../../actions/rampump-actions';
 
 import MainContentWrapper from '../MainContentWrapper';
 import Heading from '../Heading';
@@ -22,6 +23,7 @@ import type { Project } from '../../types';
 type Props = {
   project: Project,
   pages: [],
+  showRamPumpSidebar: () => any,
   loadDependencyInfoFromDisk: (projectId: string, projectPath: string) => any,
   location: any, // provided by react-router
   match: any, // provided by react-router
@@ -36,7 +38,7 @@ class RamPumpPage extends Component<Props> {
       behavior: 'smooth',
     });
 
-    // this.loadNewProjectOrBail(this.props.project);
+    this.loadNewProjectOrBail(this.props.project);
   }
 
   // componentWillReceiveProps(nextProps: Props) {
@@ -50,10 +52,10 @@ class RamPumpPage extends Component<Props> {
   // }
 
   loadNewProjectOrBail(project: Project) {
-    const { history, loadDependencyInfoFromDisk } = this.props;
+    const { history, showRamPumpSidebar } = this.props;
 
     if (project) {
-      loadDependencyInfoFromDisk(project.id, project.path);
+      showRamPumpSidebar();
     } else {
       // If the selected project was not successfully resolved, that means
       // it must have been deleted. We should redirect the user to the main
@@ -65,16 +67,18 @@ class RamPumpPage extends Component<Props> {
   render() {
     const { project } = this.props;
 
-    // if (!project) {
-    //   return null;
-    // }
+    if (!project) {
+      return null;
+    }
 
     return (
       <FadeIn>
         <MainContentWrapper>
-          <Link to="/">
-            <button>Back</button>
-          </Link>
+          {process.env.NODE_ENV === 'development' && (
+            <Link to="/">
+              <button>Back</button>
+            </Link>
+          )}
           <PixelShifter x={-2}>
             <Heading size="xlarge" style={{ color: COLORS.purple[500] }}>
               RamPump
@@ -86,10 +90,10 @@ class RamPumpPage extends Component<Props> {
           <Spacer size={30} />
           <RamPumpDevelopmentServerPane leftSideWidth={300} />
 
-          {/* <Spacer size={30} />
+          <Spacer size={30} />
           <TaskRunnerPane leftSideWidth={200} />
 
-          {project.dependencies.length > 0 && (
+          {/* {project.dependencies.length > 0 && (
             <Fragment>
               <Spacer size={30} />
               <DependencyManagementPane />
@@ -113,12 +117,12 @@ const FadeIn = styled.div`
 `;
 
 const mapStateToProps = state => ({
-  project: getSelectedProject(state),
+  project: state.rampump,
 });
 
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadDependencyInfoFromDisk }
+    { loadDependencyInfoFromDisk, showRamPumpSidebar }
   )(RamPumpPage)
 );

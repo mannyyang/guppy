@@ -33,8 +33,7 @@ class IntroSetupButton extends Component<Props> {
         // Only a single path should be selected
         const [path] = paths;
 
-        this.props.importRampumpProjectStart(path);
-        this.props.history.replace('/rampump');
+        this.props.importRampumpProjectStart(path, dialog, this.props.history);
       }
     );
   };

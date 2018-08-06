@@ -11,6 +11,12 @@ import {
   SELECT_PROJECT,
 } from '../actions';
 
+import {
+  IMPORT_RAMPUMP_PROJECT_START,
+  IMPORT_RAMPUMP_PROJECT_FINISH,
+  SHOW_RAMPUMP_SIDEBAR,
+} from '../actions/rampump-actions';
+
 import type { Action } from 'redux';
 
 export type State =
@@ -29,6 +35,7 @@ export default (state: State = initialState, action: Action) => {
 
   switch (action.type) {
     case CREATE_NEW_PROJECT_START:
+    case IMPORT_RAMPUMP_PROJECT_START:
     case IMPORT_EXISTING_PROJECT_START: {
       return state === 'brand-new' ? 'creating-first-project' : state;
     }
@@ -39,6 +46,7 @@ export default (state: State = initialState, action: Action) => {
     }
 
     case ADD_PROJECT:
+    case IMPORT_RAMPUMP_PROJECT_FINISH:
     case IMPORT_EXISTING_PROJECT_FINISH: {
       return state === 'creating-first-project' ? 'introducing-sidebar' : state;
     }
@@ -47,6 +55,9 @@ export default (state: State = initialState, action: Action) => {
     case SELECT_PROJECT: {
       return state === 'introducing-sidebar' ? 'done' : state;
     }
+
+    case SHOW_RAMPUMP_SIDEBAR:
+      return 'done';
 
     case REFRESH_PROJECTS: {
       // If the disk reveals that this user already has guppy projects, we

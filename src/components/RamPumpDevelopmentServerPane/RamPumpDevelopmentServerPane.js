@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import { launchDevServer, abortTask } from '../../actions';
+import { launchRamPumpDevServer } from '../../actions/rampump-actions';
+
 import { getSelectedProject } from '../../reducers/projects.reducer';
 import { getDevServerTaskForProjectId } from '../../reducers/tasks.reducer';
 import { getDocumentationLink } from '../../services/project-type-specifics';
@@ -23,13 +25,13 @@ import type { Project, Task } from '../../types';
 type Props = {
   project: Project,
   task: ?Task,
-  launchDevServer: (task: Task, timestamp: Date) => void,
+  launchRamPumpDevServer: (task: Task, timestamp: Date) => void,
   abortTask: (task: Task, timestamp: Date) => void,
 };
 
 class DevelopmentServerPane extends PureComponent<Props> {
   handleToggle = (isToggled: boolean) => {
-    const { task, launchDevServer, abortTask } = this.props;
+    const { task, launchRamPumpDevServer, abortTask } = this.props;
 
     if (!task) {
       // Should be impossible, since the Toggle control won't render without
@@ -40,7 +42,7 @@ class DevelopmentServerPane extends PureComponent<Props> {
     const timestamp = new Date();
 
     if (isToggled) {
-      launchDevServer(task, timestamp);
+      launchRamPumpDevServer(task, timestamp);
     } else {
       abortTask(task, timestamp);
     }
@@ -70,9 +72,8 @@ class DevelopmentServerPane extends PureComponent<Props> {
 
     const docLink = (
       <DocumentationLink>
-        <ExternalLink href={getDocumentationLink(project.type)}>
-          View Documentation
-        </ExternalLink>
+        {/* <ExternalLink href={'getDocumentationLink(project.type)'}> */}
+        <ExternalLink href={'google.com'}>View Documentation</ExternalLink>
       </DocumentationLink>
     );
 
@@ -164,23 +165,13 @@ const TerminalWrapper = styled.div`
 `;
 
 const mapStateToProps = state => {
-  const selectedProject = getSelectedProject(state);
-
-  if (!selectedProject) {
-    return { task: null };
-  }
-
   return {
-    project: selectedProject,
-    task: getDevServerTaskForProjectId(
-      state,
-      selectedProject.id,
-      selectedProject.type
-    ),
+    project: state.rampump,
+    task: state.tasks['rampump-start'],
   };
 };
 
-const mapDispatchToProps = { launchDevServer, abortTask };
+const mapDispatchToProps = { launchRamPumpDevServer, abortTask };
 
 export default connect(
   mapStateToProps,

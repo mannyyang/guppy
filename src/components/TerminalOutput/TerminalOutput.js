@@ -78,7 +78,7 @@ const Wrapper = styled.div`
   overflow: auto;
   padding: 15px;
   color: ${COLORS.white};
-  background-color: ${COLORS.blue[900]};
+  background-color: ${COLORS.blue[500]};
   border-radius: 4px;
   font-family: 'Fira Mono', monospace;
   font-size: 13px;

@@ -47,7 +47,8 @@ const initialState = {
   rootDir: '',
   rootSrcDir: '',
   dependencies: [],
-  packageJson: {},
+  srcPackageJson: {},
+  rootPackageJson: {},
   pages: mapDirs(getDirectories(PROJECT_ROOT)),
 };
 
@@ -63,7 +64,8 @@ export default (state: State = initialState, action: Action) => {
       return state;
     }
     case SET_RAMPUMP_PACKAGE_JSON: {
-      state.packageJson = action.packageJson;
+      state.rootPackageJson = action.rootPackageJson;
+      state.srcPackageJson = action.srcPackageJson;
 
       return state;
     }
