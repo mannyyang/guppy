@@ -17,13 +17,14 @@ import Swimming from '../Swimming';
 import Label from '../Label';
 
 type Props = {
+  history: any, // from react-router
   shouldHideContent: boolean,
   createNewProjectStart: () => any,
 };
 
 class IntroScreen extends Component<Props> {
   render() {
-    const { shouldHideContent, createNewProjectStart } = this.props;
+    const { shouldHideContent, createNewProjectStart, history } = this.props;
 
     return (
       <Fragment>
@@ -37,7 +38,7 @@ class IntroScreen extends Component<Props> {
           <Actions>
             <Spacer size={40} />
             <div>
-              <IntroSetupButton color={COLORS.blue[700]}>
+              <IntroSetupButton history={history} color={COLORS.blue[700]}>
                 To get started, find RamPump's root directory.
               </IntroSetupButton>
             </div>

@@ -1,9 +1,11 @@
 // @flow
-import produce from 'immer';
-import { LOAD_DEPENDENCY_INFO_FROM_DISK } from '../actions';
+// import produce from 'immer';
+import {
+  IMPORT_RAMPUMP_PROJECT_START,
+  SET_RAMPUMP_PACKAGE_JSON,
+} from '../actions/rampump-actions';
 
 import type { Action } from 'redux';
-import type { Dependency } from '../types';
 
 const path = window.require('path');
 const fs = window.require('fs');
@@ -43,11 +45,28 @@ function mapDirs(dirs) {
 
 const initialState = {
   rootDir: '',
+  rootSrcDir: '',
+  dependencies: [],
+  packageJson: {},
   pages: mapDirs(getDirectories(PROJECT_ROOT)),
 };
 
 export default (state: State = initialState, action: Action) => {
   switch (action.type) {
+    case IMPORT_RAMPUMP_PROJECT_START: {
+      const { path: rampumpRootPath } = action;
+      const vueSrcPath = path.resolve(rampumpRootPath, 'src');
+
+      state.rootDir = rampumpRootPath;
+      state.rootSrcDir = vueSrcPath;
+
+      return state;
+    }
+    case SET_RAMPUMP_PACKAGE_JSON: {
+      state.packageJson = action.packageJson;
+
+      return state;
+    }
     default:
       return state;
   }

@@ -1,9 +1,7 @@
 // @flow
-import produce from 'immer';
-import { LOAD_DEPENDENCY_INFO_FROM_DISK } from '../actions';
+// import produce from 'immer';
 
 import type { Action } from 'redux';
-import type { Dependency } from '../types';
 
 const path = window.require('path');
 const fs = window.require('fs');

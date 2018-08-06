@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 import { getSelectedProject } from '../../reducers/projects.reducer';
@@ -12,7 +12,7 @@ import MainContentWrapper from '../MainContentWrapper';
 import Heading from '../Heading';
 import PixelShifter from '../PixelShifter';
 import Spacer from '../Spacer';
-import DevelopmentServerPane from '../DevelopmentServerPane';
+import RamPumpDevelopmentServerPane from '../RamPumpDevelopmentServerPane';
 import TaskRunnerPane from '../TaskRunnerPane';
 import DependencyManagementPane from '../DependencyManagementPane';
 import Pages from '../Pages';
@@ -36,18 +36,18 @@ class RamPumpPage extends Component<Props> {
       behavior: 'smooth',
     });
 
-    this.loadNewProjectOrBail(this.props.project);
+    // this.loadNewProjectOrBail(this.props.project);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (
-      !this.props.project ||
-      !nextProps.project ||
-      this.props.project.id !== nextProps.project.id
-    ) {
-      this.loadNewProjectOrBail(nextProps.project);
-    }
-  }
+  // componentWillReceiveProps(nextProps: Props) {
+  //   if (
+  //     !this.props.project ||
+  //     !nextProps.project ||
+  //     this.props.project.id !== nextProps.project.id
+  //   ) {
+  //     this.loadNewProjectOrBail(nextProps.project);
+  //   }
+  // }
 
   loadNewProjectOrBail(project: Project) {
     const { history, loadDependencyInfoFromDisk } = this.props;
@@ -65,13 +65,16 @@ class RamPumpPage extends Component<Props> {
   render() {
     const { project } = this.props;
 
-    if (!project) {
-      return null;
-    }
+    // if (!project) {
+    //   return null;
+    // }
 
     return (
       <FadeIn>
         <MainContentWrapper>
+          <Link to="/">
+            <button>Back</button>
+          </Link>
           <PixelShifter x={-2}>
             <Heading size="xlarge" style={{ color: COLORS.purple[500] }}>
               RamPump
@@ -81,7 +84,7 @@ class RamPumpPage extends Component<Props> {
           <Pages />
 
           <Spacer size={30} />
-          <DevelopmentServerPane leftSideWidth={300} />
+          <RamPumpDevelopmentServerPane leftSideWidth={300} />
 
           {/* <Spacer size={30} />
           <TaskRunnerPane leftSideWidth={200} />

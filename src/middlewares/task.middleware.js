@@ -71,15 +71,15 @@ export default (store: any) => (next: any) => (action: any) => {
            *
            */
 
-          // const child = childProcess.spawn(instruction, args, {
-          //   cwd: projectPath,
-          //   shell: true,
-          // });
-
-          const child = childProcess.spawn('npm', ['start'], {
-            cwd: path.resolve('/Users/myang/git/RamPump/src'),
+          const child = childProcess.spawn(instruction, args, {
+            cwd: projectPath,
             shell: true,
           });
+
+          // const child = childProcess.spawn('npm', ['start'], {
+          //   cwd: path.resolve('/Users/myang/git/RamPump/src'),
+          //   shell: true,
+          // });
 
           // Now that we have a port/processId for the server, attach it to
           // the task. The port is used for opening the app, the pid is used

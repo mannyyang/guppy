@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 import { refreshProjects, selectProject } from '../../actions';
@@ -46,19 +46,21 @@ class App extends Component<Props> {
       refreshProjects,
     } = this.props;
 
-    refreshProjects();
+    // refreshProjects();
 
-    if (selectedProject) {
-      history.replace(buildUrlForProjectId(selectedProject.id));
-    }
+    // if (selectedProject) {
+    //   history.replace(buildUrlForProjectId(selectedProject.id));
+    // }
 
-    history.listen(location => {
-      const projectId = extractProjectIdFromUrl(location);
+    // history.listen(location => {
+    //   const projectId = extractProjectIdFromUrl(location);
 
-      if (projectId) {
-        selectProject(projectId);
-      }
-    });
+    //   if (projectId) {
+    //     selectProject(projectId);
+    //   }
+    // });
+
+    history.listen(location => {});
   }
 
   render() {
@@ -72,12 +74,19 @@ class App extends Component<Props> {
 
           <MainContent>
             <Switch>
-              <Route exact path="/" component={IntroScreen} />
               <Route
+                exact
+                path="/"
+                render={routerProps => (
+                  <IntroScreen history={this.props.history} {...routerProps} />
+                )}
+              />
+              <Route
+                exact
                 path="/rampump"
                 render={routerProps => <RamPumpPage {...routerProps} />}
               />
-              <Route
+              {/* <Route
                 path="/project/:projectId"
                 render={routerProps => (
                   <ProjectPage
@@ -85,7 +94,7 @@ class App extends Component<Props> {
                     {...routerProps}
                   />
                 )}
-              />
+              /> */}
             </Switch>
           </MainContent>
         </Wrapper>

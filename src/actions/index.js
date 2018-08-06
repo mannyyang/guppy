@@ -4,10 +4,13 @@ import uuid from 'uuid/v1';
 import {
   loadGuppyProjects,
   loadAllProjectDependencies,
+  loadPackageJson,
 } from '../services/read-from-disk.service';
 import { getInternalProjectById } from '../reducers/projects.reducer';
 
 import type { Project, Task, Dependency } from '../types';
+
+const path = window.require('path');
 
 //
 //
@@ -46,21 +49,19 @@ export const IMPORT_EXISTING_PROJECT_START = 'IMPORT_EXISTING_PROJECT_START';
 export const IMPORT_EXISTING_PROJECT_ERROR = 'IMPORT_EXISTING_PROJECT_ERROR';
 export const IMPORT_EXISTING_PROJECT_FINISH = 'IMPORT_EXISTING_PROJECT_FINISH';
 
+/////////////////////////////////////////////////////////////////////////////
 // RAMPUMP ACTIONS
 export const SHOW_RAMPUMP_PROJECT_PROMPT = 'SHOW_RAMPUMP_PROJECT_PROMPT';
-export const SET_RAMPUMP_ROOT_FOLDER = 'SET_RAMPUMP_ROOT_FOLDER';
+export const IMPORT_RAMPUMP_PROJECT_START = 'IMPORT_RAMPUMP_PROJECT_START';
+export const IMPORT_RAMPUMP_PROJECT_FINISH = 'IMPORT_RAMPUMP_PROJECT_FINISH';
+export const SET_RAMPUMP_PACKAGE_JSON = 'SET_RAMPUMP_PACKAGE_JSON';
 
 //
 //
 // Action Creators
 //
-
-// RamPump Action Creators
-export const showRamPumpProjectPrompt = () => ({
-  type: SHOW_RAMPUMP_PROJECT_PROMPT,
-});
-
-/////////
+/////////////////////////////////////////////////////////////////////////////
+///////// guppy
 export const addProject = (project: Project) => ({
   type: ADD_PROJECT,
   project,

@@ -1,7 +1,6 @@
 // @flow
 import {
   SHOW_IMPORT_EXISTING_PROJECT_PROMPT,
-  SHOW_RAMPUMP_PROJECT_PROMPT,
   IMPORT_EXISTING_PROJECT_START,
   importExistingProjectStart,
   importExistingProjectFinish,
@@ -15,37 +14,17 @@ import {
 import { getColorForProject } from '../services/create-project.service';
 
 const { dialog } = window.require('electron').remote;
+const path = window.require('path');
 
 // TODO: Flow types
-export default (store: any) => (next: any) => (action: any) => {
+export default (store: any) => (next: any) => (action: {
+  type: string,
+  history: any,
+}) => {
   // Pass all actions through
   next(action);
 
   switch (action.type) {
-    case SHOW_RAMPUMP_PROJECT_PROMPT: {
-      dialog.showOpenDialog(
-        {
-          message:
-            'Select the root directory of the RamPump application (ex. c:/git/RamPump)',
-          properties: ['openDirectory'],
-        },
-        paths => {
-          // The user might cancel out without selecting a directory.
-          // In that case, do nothing.
-          if (!paths) {
-            return;
-          }
-
-          // Only a single path should be selected
-          const [path] = paths;
-
-          // store.dispatch(importExistingProjectStart(path));
-        }
-      );
-
-      return;
-    }
-
     case SHOW_IMPORT_EXISTING_PROJECT_PROMPT: {
       dialog.showOpenDialog(
         {
