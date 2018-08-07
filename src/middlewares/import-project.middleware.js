@@ -14,13 +14,9 @@ import {
 import { getColorForProject } from '../services/create-project.service';
 
 const { dialog } = window.require('electron').remote;
-const path = window.require('path');
 
 // TODO: Flow types
-export default (store: any) => (next: any) => (action: {
-  type: string,
-  history: any,
-}) => {
+export default (store: any) => (next: any) => (action: any) => {
   // Pass all actions through
   next(action);
 

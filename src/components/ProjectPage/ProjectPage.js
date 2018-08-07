@@ -15,14 +15,11 @@ import Spacer from '../Spacer';
 import DevelopmentServerPane from '../DevelopmentServerPane';
 import TaskRunnerPane from '../TaskRunnerPane';
 import DependencyManagementPane from '../DependencyManagementPane';
-import Pages from '../Pages';
-import ImportProjectButton from '../ImportProjectButton';
 
 import type { Project } from '../../types';
 
 type Props = {
   project: Project,
-  pages: [],
   loadDependencyInfoFromDisk: (projectId: string, projectPath: string) => any,
   location: any, // provided by react-router
   match: any, // provided by react-router
@@ -75,11 +72,9 @@ class ProjectPage extends Component<Props> {
         <MainContentWrapper>
           <PixelShifter x={-2}>
             <Heading size="xlarge" style={{ color: COLORS.purple[500] }}>
-              RamPump
+              {project.name}
             </Heading>
           </PixelShifter>
-          <ImportProjectButton>Import it instead</ImportProjectButton>
-          <Pages />
 
           <Spacer size={30} />
           <DevelopmentServerPane leftSideWidth={300} />

@@ -10,47 +10,40 @@ import { COLORS } from '../../constants';
 import { getOnboardingStatus } from '../../reducers/onboarding-status.reducer';
 
 import Button from '../Button';
-import IntroSetupButton from '../IntroSetupButton';
+import ImportProjectButton from '../ImportProjectButton';
 import Spacer from '../Spacer';
 import Logo from '../Logo';
 import Swimming from '../Swimming';
-import Label from '../Label';
 
 type Props = {
-  history: any, // from react-router
   shouldHideContent: boolean,
   createNewProjectStart: () => any,
 };
 
 class IntroScreen extends Component<Props> {
-  constructor(props) {
-    super(props);
-
-    const { project, history } = props;
-
-    // if (project.rootDir) {
-    //   history.replace('/rampump');
-    // }
-  }
-
   render() {
-    const { shouldHideContent, createNewProjectStart, history } = this.props;
+    const { shouldHideContent, createNewProjectStart } = this.props;
 
     return (
       <Fragment>
         <Wrapper isVisible={!shouldHideContent}>
           <Header>
-            <Logo size="large" />
-            <AppName>T.R.A.M.</AppName>
-            <Label>RamPump's Task Runner and App Manager</Label>
+            <Swimming>
+              <Logo size="medium" />
+            </Swimming>
+            <AppName>Guppy</AppName>
           </Header>
 
           <Actions>
-            {/* <Spacer size={10} /> */}
+            <Button size="large" onClick={() => createNewProjectStart()}>
+              Create a new web application
+            </Button>
+            <Spacer size={40} />
             <div>
-              <IntroSetupButton history={history} color={COLORS.blue[700]}>
-                To get started, find RamPump's root directory.
-              </IntroSetupButton>
+              Or,{' '}
+              <ImportProjectButton color={COLORS.blue[700]}>
+                import an existing project
+              </ImportProjectButton>
             </div>
           </Actions>
         </Wrapper>
@@ -68,7 +61,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
   opacity: ${props => (props.isVisible ? 1 : 0)};
   pointer-events: ${props => (props.isVisible ? 'auto' : 'none')};
   transition: opacity 500ms;
@@ -90,7 +83,6 @@ const Actions = styled.div`
 
 const mapStateToProps = state => ({
   shouldHideContent: getOnboardingStatus(state) !== 'brand-new',
-  project: state.rampump,
 });
 
 export default connect(

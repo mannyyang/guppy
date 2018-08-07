@@ -27,11 +27,6 @@ import {
   RECEIVE_DATA_FROM_TASK_EXECUTION,
   IMPORT_EXISTING_PROJECT_FINISH,
 } from '../actions';
-import {
-  IMPORT_RAMPUMP_PROJECT_FINISH,
-  LAUNCH_RAMPUMP_DEV_SERVER,
-  RUN_RAMPUMP_TASK,
-} from '../actions/rampump-actions';
 
 import type { Action } from 'redux';
 import type { Task, ProjectType } from '../types';
@@ -101,28 +96,7 @@ export default (state: State = initialState, action: Action) => {
       });
     }
 
-    case IMPORT_RAMPUMP_PROJECT_FINISH: {
-      const { project } = action;
-      const projectId = 'rampump';
-
-      return produce(state, draftState => {
-        Object.keys(project.scripts).forEach(name => {
-          const command = project.scripts[name];
-          const uniqueTaskId = `rampump-${name}`;
-
-          draftState[uniqueTaskId] = buildNewTask(
-            uniqueTaskId,
-            projectId,
-            name,
-            command
-          );
-        });
-      });
-    }
-
     case LAUNCH_DEV_SERVER:
-    case LAUNCH_RAMPUMP_DEV_SERVER:
-    case RUN_RAMPUMP_TASK:
     case RUN_TASK: {
       const { task, timestamp } = action;
 

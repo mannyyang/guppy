@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, withRouter, Link } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 import { refreshProjects, selectProject } from '../../actions';
@@ -17,12 +17,11 @@ import {
 import { getOnboardingStatus } from '../../reducers/onboarding-status.reducer';
 
 import IntroScreen from '../IntroScreen';
-import Sidebar from '../RamPumpSidebar';
+import Sidebar from '../Sidebar';
 import Titlebar from '../Titlebar';
 import ApplicationMenu from '../ApplicationMenu';
 import ProjectPage from '../ProjectPage';
 import CreateNewProjectWizard from '../CreateNewProjectWizard';
-import RamPumpPage from '../RamPumpPage';
 
 import type { Action } from 'redux';
 import type { Project } from '../../types';
@@ -46,21 +45,19 @@ class App extends Component<Props> {
       refreshProjects,
     } = this.props;
 
-    // refreshProjects();
+    refreshProjects();
 
-    // if (selectedProject) {
-    //   history.replace(buildUrlForProjectId(selectedProject.id));
-    // }
+    if (selectedProject) {
+      history.replace(buildUrlForProjectId(selectedProject.id));
+    }
 
-    // history.listen(location => {
-    //   const projectId = extractProjectIdFromUrl(location);
+    history.listen(location => {
+      const projectId = extractProjectIdFromUrl(location);
 
-    //   if (projectId) {
-    //     selectProject(projectId);
-    //   }
-    // });
-
-    history.listen(location => {});
+      if (projectId) {
+        selectProject(projectId);
+      }
+    });
   }
 
   render() {
@@ -74,19 +71,8 @@ class App extends Component<Props> {
 
           <MainContent>
             <Switch>
+              <Route exact path="/" component={IntroScreen} />
               <Route
-                exact
-                path="/"
-                render={routerProps => (
-                  <IntroScreen history={this.props.history} {...routerProps} />
-                )}
-              />
-              <Route
-                exact
-                path="/rampump"
-                render={routerProps => <RamPumpPage {...routerProps} />}
-              />
-              {/* <Route
                 path="/project/:projectId"
                 render={routerProps => (
                   <ProjectPage
@@ -94,7 +80,7 @@ class App extends Component<Props> {
                     {...routerProps}
                   />
                 )}
-              /> */}
+              />
             </Switch>
           </MainContent>
         </Wrapper>
@@ -125,13 +111,11 @@ const MainContent = styled.div`
   flex: 1;
 `;
 
-const mapStateToProps = state => {
-  return {
-    onboardingStatus: getOnboardingStatus(state),
-    projects: getProjectsArray(state),
-    selectedProject: getSelectedProject(state),
-  };
-};
+const mapStateToProps = state => ({
+  onboardingStatus: getOnboardingStatus(state),
+  projects: getProjectsArray(state),
+  selectedProject: getSelectedProject(state),
+});
 
 export default withRouter(
   connect(
