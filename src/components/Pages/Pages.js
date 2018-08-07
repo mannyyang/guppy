@@ -35,7 +35,7 @@ type State = {
 
 class Pages extends PureComponent<Props, State> {
   render() {
-    const pages = this.props.pages.pages;
+    const pages = this.props.pages;
 
     return (
       <Module title="Admin Pages">
@@ -177,7 +177,7 @@ const MainContent = Card.extend`
 const mapStateToProps = state => {
   return {
     project: getSelectedProject(state),
-    pages: state.pages,
+    pages: state.rampump.pages,
   };
 };
 

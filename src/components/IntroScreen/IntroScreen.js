@@ -28,9 +28,9 @@ class IntroScreen extends Component<Props> {
 
     const { project, history } = props;
 
-    if (project.rootDir) {
-      history.replace('/rampump');
-    }
+    // if (project.rootDir) {
+    //   history.replace('/rampump');
+    // }
   }
 
   render() {
@@ -46,7 +46,7 @@ class IntroScreen extends Component<Props> {
           </Header>
 
           <Actions>
-            <Spacer size={40} />
+            {/* <Spacer size={10} /> */}
             <div>
               <IntroSetupButton history={history} color={COLORS.blue[700]}>
                 To get started, find RamPump's root directory.
@@ -68,7 +68,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   opacity: ${props => (props.isVisible ? 1 : 0)};
   pointer-events: ${props => (props.isVisible ? 'auto' : 'none')};
   transition: opacity 500ms;

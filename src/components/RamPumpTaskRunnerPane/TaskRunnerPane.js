@@ -75,7 +75,7 @@ class TaskRunnerPane extends Component<Props, State> {
     return (
       <Module
         title="Tasks"
-        moreInfoHref="https://github.com/joshwcomeau/guppy/blob/master/docs/getting-started.md#tasks"
+        // moreInfoHref="https://github.com/joshwcomeau/guppy/blob/master/docs/getting-started.md#tasks"
       >
         {tasks.map(task => (
           <TaskRunnerPaneRow
@@ -101,12 +101,11 @@ class TaskRunnerPane extends Component<Props, State> {
 }
 
 const mapStateToProps = state => {
-  const selectedProjectId = getSelectedProjectId(state);
-  const tasks = Object.keys(state.tasks).map(taskId => state.tasks[taskId]);
+  const filterOut = ['start', 'cypress'];
 
-  // const tasks = selectedProjectId
-  //   ? getTasksInTaskListForProjectId(state, selectedProjectId)
-  //   : [];
+  const tasks = Object.keys(state.tasks)
+    .map(taskId => state.tasks[taskId])
+    .filter(task => filterOut.indexOf(task.name) < 0);
 
   return { tasks };
 };

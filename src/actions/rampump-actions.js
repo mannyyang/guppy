@@ -13,6 +13,37 @@ import { getInternalProjectById } from '../reducers/projects.reducer';
 import type { Project, Task, Dependency } from '../types';
 
 const path = window.require('path');
+const fs = window.require('fs');
+
+const BASE_URL = 'http://localhost:3031';
+const PROJECT_ROOT = '/Users/myang/git/RamPump/src';
+
+/**
+ * Get list of all directories in a directory
+ * @param {String} p Absolute path of directory
+ */
+function getDirectories(p) {
+  return fs
+    .readdirSync(p)
+    .filter(f => fs.statSync(path.join(p, f)).isDirectory());
+}
+
+function mapDirs(dirs, src) {
+  let excludes = ['node_modules', 'tests'];
+
+  return dirs
+    .filter(dir => excludes.indexOf(dir) === -1 && dir[0] !== '_')
+    .map(dir => {
+      return {
+        name: dir,
+        dirname: dir,
+        path: path.resolve(src, dir),
+        thumbnail: '',
+        port: 3031,
+        url: `${BASE_URL}/${dir}`,
+      };
+    });
+}
 
 // RAMPUMP ACTIONS
 export const IMPORT_RAMPUMP_PROJECT_START = 'IMPORT_RAMPUMP_PROJECT_START';
@@ -29,10 +60,9 @@ export function importRampumpProjectStart(
   history: any
 ) {
   return (dispatch, getState) => {
-    Promise.all([
-      loadPackageJson(rampumpRootPath),
-      loadPackageJson(path.resolve(rampumpRootPath, 'src')),
-    ])
+    const srcPath = path.resolve(rampumpRootPath, 'src');
+
+    Promise.all([loadPackageJson(rampumpRootPath), loadPackageJson(srcPath)])
       .then(values => {
         if (values[0].name !== 'RamPump') {
           throw new Error('invalid-project');
@@ -45,6 +75,7 @@ export function importRampumpProjectStart(
         dispatch({
           type: IMPORT_RAMPUMP_PROJECT_START,
           path: rampumpRootPath,
+          pages: mapDirs(getDirectories(srcPath), srcPath),
         });
 
         // Set package json info for both rampump root and src root

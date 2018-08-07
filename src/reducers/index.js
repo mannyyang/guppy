@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 
 import projects from './projects.reducer';
-import pages from './pages.reducer';
 import tasks from './tasks.reducer';
 import dependencies from './dependencies.reducer';
 import modal from './modal.reducer';
@@ -12,7 +11,6 @@ import rampump from './rampump.reducer';
 
 export default combineReducers({
   projects,
-  pages,
   tasks,
   dependencies,
   modal,
