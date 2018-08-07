@@ -76,7 +76,7 @@ class ProjectPage extends Component<Props> {
             reason="Align left edge of title with the modules on page"
           >
             <Heading size="xlarge" style={{ color: COLORS.purple[500] }}>
-              {project.name}
+              {project.type === 'rampump' ? 'RamPump' : project.name}
             </Heading>
           </PixelShifter>
 
