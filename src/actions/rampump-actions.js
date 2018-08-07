@@ -20,6 +20,7 @@ export const IMPORT_RAMPUMP_PROJECT_FINISH = 'IMPORT_RAMPUMP_PROJECT_FINISH';
 export const SET_RAMPUMP_PACKAGE_JSON = 'SET_RAMPUMP_PACKAGE_JSON';
 export const LAUNCH_RAMPUMP_DEV_SERVER = 'LAUNCH_RAMPUMP_DEV_SERVER';
 export const SHOW_RAMPUMP_SIDEBAR = 'SHOW_RAMPUMP_SIDEBAR';
+export const RUN_RAMPUMP_TASK = 'RUN_RAMPUMP_TASK';
 
 // RamPump Action Creators
 export function importRampumpProjectStart(
@@ -49,9 +50,13 @@ export function importRampumpProjectStart(
         // Set package json info for both rampump root and src root
         // (directory for all vue pages.)
         dispatch(setRamPumpPackageJson(values[0], values[1]));
+
+        // return the package.json of the src folder so it can be used
+        // to create the tasks lists.
+        return values[1];
       })
-      .then(() => {
-        dispatch(importRamPumpProjectFinish());
+      .then(srcPackageJson => {
+        dispatch(importRamPumpProjectFinish(srcPackageJson));
       })
       .catch(err => {
         if (err.code === 'ENOENT') {
@@ -87,12 +92,8 @@ export const setRamPumpPackageJson = (rootPackageJson, srcPackageJson) => ({
   srcPackageJson,
 });
 
-export const importRamPumpProjectFinish = (
-  path?: string,
-  project?: Project
-) => ({
+export const importRamPumpProjectFinish = (project?: Project) => ({
   type: IMPORT_RAMPUMP_PROJECT_FINISH,
-  path,
   project,
 });
 
@@ -104,4 +105,10 @@ export const launchRamPumpDevServer = (task: Task, timestamp: Date) => ({
 
 export const showRamPumpSidebar = () => ({
   type: SHOW_RAMPUMP_SIDEBAR,
+});
+
+export const runRamPumpTask = (task: Task, timestamp: Date) => ({
+  type: RUN_RAMPUMP_TASK,
+  task,
+  timestamp,
 });

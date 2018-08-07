@@ -14,7 +14,7 @@ import Heading from '../Heading';
 import PixelShifter from '../PixelShifter';
 import Spacer from '../Spacer';
 import RamPumpDevelopmentServerPane from '../RamPumpDevelopmentServerPane';
-import TaskRunnerPane from '../TaskRunnerPane';
+import TaskRunnerPane from '../RamPumpTaskRunnerPane';
 import DependencyManagementPane from '../DependencyManagementPane';
 import Pages from '../Pages';
 

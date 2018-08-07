@@ -1,5 +1,4 @@
 const ElectronStore = window.require('electron-store');
-
 const electronStore = new ElectronStore();
 
 const REDUX_STATE_KEY =

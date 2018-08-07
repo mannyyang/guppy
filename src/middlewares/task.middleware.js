@@ -9,7 +9,10 @@ import {
   receiveDataFromTaskExecution,
   loadDependencyInfoFromDisk,
 } from '../actions';
-import { LAUNCH_RAMPUMP_DEV_SERVER } from '../actions/rampump-actions';
+import {
+  LAUNCH_RAMPUMP_DEV_SERVER,
+  RUN_RAMPUMP_TASK,
+} from '../actions/rampump-actions';
 
 import { getProjectById } from '../reducers/projects.reducer';
 import { getPathForProjectId } from '../reducers/paths.reducer';
@@ -206,6 +209,41 @@ export default (store: any) => (next: any) => (action: any) => {
     // TODO: As tasks start to get more customized for the project types,
     // it probably makes sense to have separate actions (eg. RUN_TESTS,
     // BUILD_FOR_PRODUCTION), and use RUN_TASK just for user-added tasks.
+    case RUN_RAMPUMP_TASK: {
+      const { name } = action.task;
+
+      // const project = getProjectById(store.getState(), projectId);
+      const projectPath = store.getState().rampump.rootSrcDir;
+      const child = childProcess.spawn('npm', ['run', name], {
+        cwd: projectPath,
+        shell: true,
+      });
+
+      // When this application exits, we want to kill this process.
+      // Send it up to the main process.
+      ipcRenderer.send('addProcessId', child.pid);
+
+      // TODO: Does the renderer process still need to know about the child
+      // processId?
+      next(attachTaskMetadata(task, child.pid));
+
+      child.stdout.on('data', data => {
+        next(receiveDataFromTaskExecution(task, data.toString()));
+      });
+
+      child.stderr.on('data', data => {
+        next(receiveDataFromTaskExecution(task, data.toString()));
+      });
+
+      child.on('exit', code => {
+        const timestamp = new Date();
+
+        store.dispatch(completeTask(task, timestamp, code === 0));
+      });
+
+      break;
+    }
+
     case RUN_TASK: {
       const { projectId, name } = action.task;
 

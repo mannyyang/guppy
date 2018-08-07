@@ -23,6 +23,16 @@ type Props = {
 };
 
 class IntroScreen extends Component<Props> {
+  constructor(props) {
+    super(props);
+
+    const { project, history } = props;
+
+    if (project.rootDir) {
+      history.replace('/rampump');
+    }
+  }
+
   render() {
     const { shouldHideContent, createNewProjectStart, history } = this.props;
 
@@ -80,6 +90,7 @@ const Actions = styled.div`
 
 const mapStateToProps = state => ({
   shouldHideContent: getOnboardingStatus(state) !== 'brand-new',
+  project: state.rampump,
 });
 
 export default connect(
