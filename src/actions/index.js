@@ -9,6 +9,9 @@ import { getInternalProjectById } from '../reducers/projects.reducer';
 
 import type { Project, Task, Dependency } from '../types';
 
+const path = window.require('path');
+const fs = window.require('fs');
+
 //
 //
 // Action Types
@@ -16,6 +19,7 @@ import type { Project, Task, Dependency } from '../types';
 // https://flow.org/en/docs/react/redux/
 //
 export const REFRESH_PROJECTS = 'REFRESH_PROJECTS';
+export const REFRESH_PAGES = 'REFRESH_PAGES';
 export const CREATE_NEW_PROJECT_START = 'CREATE_NEW_PROJECT_START';
 export const CREATE_NEW_PROJECT_CANCEL = 'CREATE_NEW_PROJECT_CANCEL';
 export const CREATE_NEW_PROJECT_FINISH = 'CREATE_NEW_PROJECT_FINISH';
@@ -72,6 +76,42 @@ export const refreshProjects = () => {
       .catch(err => {
         console.error('Could not load guppy projects', err);
       });
+  };
+};
+
+const BASE_URL = 'http://localhost:3031';
+
+/**
+ * Get list of all directories in a directory
+ * @param {String} p Absolute path of directory
+ */
+function getDirectories(p) {
+  return fs
+    .readdirSync(p)
+    .filter(f => fs.statSync(path.join(p, f)).isDirectory());
+}
+
+function mapDirs(dirs, src) {
+  let excludes = ['node_modules', 'tests'];
+
+  return dirs
+    .filter(dir => excludes.indexOf(dir) === -1 && dir[0] !== '_')
+    .map(dir => {
+      return {
+        name: dir,
+        dirname: dir,
+        path: path.resolve(src, dir),
+        thumbnail: '',
+        port: 3031,
+        url: `${BASE_URL}/${dir}`,
+      };
+    });
+}
+
+export const refreshPages = (srcPath: string) => {
+  return {
+    type: REFRESH_PAGES,
+    pages: mapDirs(getDirectories(srcPath), srcPath),
   };
 };
 

@@ -5,6 +5,7 @@ import {
   importExistingProjectStart,
   importExistingProjectFinish,
   importExistingProjectError,
+  refreshPages,
 } from '../actions';
 import { getInternalProjectById } from '../reducers/projects.reducer';
 import {
@@ -14,6 +15,7 @@ import {
 import { getColorForProject } from '../services/create-project.service';
 
 const { dialog } = window.require('electron').remote;
+const path = window.require('path');
 
 // TODO: Flow types
 export default (store: any) => (next: any) => (action: any) => {
@@ -24,7 +26,7 @@ export default (store: any) => (next: any) => (action: any) => {
     case SHOW_IMPORT_EXISTING_PROJECT_PROMPT: {
       dialog.showOpenDialog(
         {
-          message: 'Select the directory of an existing React app',
+          message: 'Select the directory of the RamPump app',
           properties: ['openDirectory'],
         },
         paths => {
@@ -35,9 +37,10 @@ export default (store: any) => (next: any) => (action: any) => {
           }
 
           // Only a single path should be selected
-          const [path] = paths;
+          const [rootPath] = paths;
+          const srcPath = path.resolve(rootPath, 'src');
 
-          store.dispatch(importExistingProjectStart(path));
+          store.dispatch(importExistingProjectStart(srcPath));
         }
       );
 
@@ -90,6 +93,7 @@ export default (store: any) => (next: any) => (action: any) => {
         })
         .then(json => writePackageJson(path, json))
         .then(json => {
+          store.dispatch(refreshPages(path));
           next(importExistingProjectFinish(path, json));
         })
         .catch(err => {
@@ -158,6 +162,10 @@ const inferProjectType = json => {
   // scripts
   if (dependencyNames.includes('eslint-config-react-app')) {
     return 'create-react-app';
+  }
+
+  if (json.name === 'rampump-vue') {
+    return 'rampump';
   }
 
   return null;

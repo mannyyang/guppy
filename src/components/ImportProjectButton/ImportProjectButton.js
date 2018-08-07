@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { showImportExistingProjectPrompt } from '../../actions';
 
-import TextButton from '../TextButton';
+import BigClickableButton from '../BigClickableButton';
 
 type Props = {
   color: string,
@@ -17,9 +17,13 @@ class ImportProjectButton extends Component<Props> {
     const { color, children, showImportExistingProjectPrompt } = this.props;
 
     return (
-      <TextButton style={{ color }} onClick={showImportExistingProjectPrompt}>
+      <BigClickableButton
+        width={350}
+        style={{ color }}
+        onClick={showImportExistingProjectPrompt}
+      >
         {children}
-      </TextButton>
+      </BigClickableButton>
     );
   }
 }

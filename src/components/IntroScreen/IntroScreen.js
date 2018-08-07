@@ -14,6 +14,7 @@ import ImportProjectButton from '../ImportProjectButton';
 import Spacer from '../Spacer';
 import Logo from '../Logo';
 import Swimming from '../Swimming';
+import Label from '../Label';
 
 type Props = {
   shouldHideContent: boolean,
@@ -28,21 +29,22 @@ class IntroScreen extends Component<Props> {
       <Fragment>
         <Wrapper isVisible={!shouldHideContent}>
           <Header>
-            <Swimming>
+            {/* <Swimming>
               <Logo size="medium" />
-            </Swimming>
-            <AppName>Guppy</AppName>
+            </Swimming> */}
+            <Logo size="large" />
+            <AppName>T.R.A.M.</AppName>
+            <Label>RamPump's Task Runner and Application Manager</Label>
           </Header>
 
           <Actions>
-            <Button size="large" onClick={() => createNewProjectStart()}>
+            {/* <Button size="large" onClick={() => createNewProjectStart()}>
               Create a new web application
             </Button>
-            <Spacer size={40} />
+            <Spacer size={40} /> */}
             <div>
-              Or,{' '}
               <ImportProjectButton color={COLORS.blue[700]}>
-                import an existing project
+                Set the RamPump's root folder to get started.
               </ImportProjectButton>
             </div>
           </Actions>
@@ -61,7 +63,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
   opacity: ${props => (props.isVisible ? 1 : 0)};
   pointer-events: ${props => (props.isVisible ? 'auto' : 'none')};
   transition: opacity 500ms;

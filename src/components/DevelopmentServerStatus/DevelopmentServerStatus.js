@@ -38,11 +38,11 @@ const DevelopmentServerStatus = ({ status, port }: Props) => {
               hoverColor={COLORS.gray[900]}
               href={serverUrl}
             >
-              <IconLinkContents>
+              {/* <IconLinkContents>
                 <IconBase icon={externalLink} />
                 <Spacer inline size={5} />
                 Open App
-              </IconLinkContents>
+              </IconLinkContents> */}
             </ExternalLink>
           )}
         </StatusCaption>

@@ -16,6 +16,8 @@ export const getDocumentationLink = (projectType: ProjectType) => {
       return 'https://github.com/facebook/create-react-app#user-guide';
     case 'gatsby':
       return 'https://www.gatsbyjs.org/docs/';
+    case 'rampump':
+      return 'https://nativo.atlassian.net/wiki/spaces/ENG/pages/591167507/Vue.js+Development+-+RamPump';
     default:
       throw new Error('Unrecognized project type: ' + projectType);
   }

@@ -25,9 +25,11 @@ const updateElectronStore = value =>
  * persist it to localStorage.
  */
 export const handleReduxUpdates = reduxStore => {
-  const { projects, dependencies, tasks, paths } = reduxStore.getState();
+  const { projects, dependencies, tasks, paths, pages } = reduxStore.getState();
 
-  updateElectronStore(JSON.stringify({ projects, dependencies, tasks, paths }));
+  updateElectronStore(
+    JSON.stringify({ projects, dependencies, tasks, paths, pages })
+  );
 };
 
 /**

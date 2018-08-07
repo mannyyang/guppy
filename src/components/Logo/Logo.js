@@ -14,7 +14,7 @@ class Logo extends Component<Props> {
     return (
       <LogoElem size={size} grayscale={grayscale}>
         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-        🐠
+        🚇
       </LogoElem>
     );
   }

@@ -15,6 +15,7 @@ import Spacer from '../Spacer';
 import DevelopmentServerPane from '../DevelopmentServerPane';
 import TaskRunnerPane from '../TaskRunnerPane';
 import DependencyManagementPane from '../DependencyManagementPane';
+import Pages from '../Pages';
 
 import type { Project } from '../../types';
 
@@ -78,6 +79,13 @@ class ProjectPage extends Component<Props> {
               {project.name}
             </Heading>
           </PixelShifter>
+
+          {project.type === 'rampump' && (
+            <Fragment>
+              <Spacer size={30} />
+              <Pages />
+            </Fragment>
+          )}
 
           <Spacer size={30} />
           <DevelopmentServerPane leftSideWidth={300} />

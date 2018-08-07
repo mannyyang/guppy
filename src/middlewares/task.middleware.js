@@ -272,6 +272,8 @@ const getDevServerCommand = (
       return [`PORT=${port} npm`, 'run', task.name];
     case 'gatsby':
       return ['npm', 'run', task.name, '--', `-p ${port}`];
+    case 'rampump':
+      return [`npm`, 'run', task.name];
     default:
       throw new Error('Unrecognized project type: ' + projectType);
   }

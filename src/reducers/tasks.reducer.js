@@ -181,6 +181,21 @@ export const getTaskDescription = (name: string) => {
   // editable on a project-by-project basis, and so we will need to store this
   // in the reducer.
   switch (name) {
+    case 'paver:up': {
+      return 'Start up the RamPump app';
+    }
+    case 'paver:down': {
+      return 'Brings down the app services and destroys the containers';
+    }
+    case 'paver:restart': {
+      return 'Restart all RamPump services';
+    }
+    case 'aws:login': {
+      return 'Login in with your saved AWS credentials';
+    }
+    case 'test:dev': {
+      return 'Open the E2E tests manager';
+    }
     case 'start': {
       return 'Run a local development server';
     }
@@ -248,13 +263,15 @@ type GlobalState = { tasks: State };
 export const getTaskById = (state: GlobalState, taskId: string) =>
   state.tasks[taskId];
 
+// TODO: Create a list for tasks that should be filtered out.
 export const getTasksForProjectId = (
   state: any,
   projectId: string
 ): Array<Task> =>
   Object.keys(state.tasks)
     .map(taskId => state.tasks[taskId])
-    .filter(task => task.projectId === projectId);
+    .filter(task => task.projectId === projectId)
+    .filter(task => task.name !== 'cypress');
 
 export const getTasksInTaskListForProjectId = (
   state: GlobalState,
@@ -276,6 +293,10 @@ export const getDevServerTaskForProjectId = (
 
     case 'gatsby': {
       return state.tasks[buildUniqueTaskId(projectId, 'develop')];
+    }
+
+    case 'rampump': {
+      return state.tasks[buildUniqueTaskId(projectId, 'start')];
     }
 
     default:

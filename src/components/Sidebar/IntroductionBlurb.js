@@ -23,18 +23,16 @@ class IntroductionBlurb extends PureComponent<Props> {
           <IconBase size={72} icon={cornerUpLeft} />
         </LargeIconWrapper>
 
-        <Heading>
-          This is the <Em>Projects Sidebar</Em>.
-        </Heading>
+        <Heading>This is the Application Sidebar.</Heading>
 
         <Paragraph>
-          Your new project was just added! As you create more projects, they'll
-          show up here too.
+          The RamPump application was just added! As more applications become
+          available, they will be shown here.
         </Paragraph>
 
         <Spacer size={20} />
         <Paragraph>
-          <strong>Click on your first project to select it.</strong>
+          <strong>Click on RamPump to begin.</strong>
         </Paragraph>
       </Wrapper>
     );

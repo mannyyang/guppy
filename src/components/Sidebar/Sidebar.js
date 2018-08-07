@@ -144,11 +144,11 @@ class Sidebar extends PureComponent<Props, State> {
                     <Spacer size={18} />
                   </Fragment>
                 ))}
-                <AddProjectButton
+                {/* <AddProjectButton
                   size={SIDEBAR_ICON_SIZE}
                   onClick={createNewProjectStart}
                   isVisible={finishedOnboarding || introSequenceStepIndex >= 2}
-                />
+                /> */}
               </Projects>
             </Wrapper>
             {isVisible && <SidebarSpacer />}
